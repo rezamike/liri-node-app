@@ -29,18 +29,12 @@ switch (command) {
     break;
     case "spotify-this-song" :
 
-    fs.appendFile("random.txt", input, function(err) {
-
-        // If an error was experienced we will log it.
+    spotify.search({ type: "track", query: input, limit: 1 }, function(err, data) {
         if (err) {
-          console.log(err);
+          return console.log('Error occurred: ' + err);
         }
-      
-        // If no error is experienced, we'll log the phrase "Content Added" to our node console.
-        else {
-          console.log("Content Added!");
-        }
-      
+       
+      console.log(JSON.parse(data.tracks.items.artists[0])); 
       });
 
     // request(Spotify, function (error, response, event) {
