@@ -65,7 +65,8 @@ inquirer
                     .then(function (response) {
                         var songInput = response.song;
 
-                        spotify.search({ type: "track", query: songInput, limit: 1 }, function (err, data) {
+                        if (songInput !== null) {
+                        spotify.search({ type: "track", query: "the sign ace of base", limit: 1 }, function (err, data) {
                             if (err) {
                                 return console.log('Error occurred: ' + err);
                             }
@@ -73,17 +74,33 @@ inquirer
                             console.log("Artist: " + data.tracks.items[0].artists[0].name);
                             console.log("Song: " + data.tracks.items[0].name);
 
-                            if (data.tracks.items[0].preview_url === null) {
+                            if (data.tracks.items[0].preview_url !== null) {
                                 console.log("Preview: (Preview not available)")
                             }
                             else {
                                 console.log("Preview: " + data.tracks.items[0].preview_url);
                             }
                             console.log("Album: " + data.tracks.items[0].album.name);
-
-
-
                         });
+                        }
+                        else {
+                            spotify.search({ type: "track", query: songInput, limit: 1 }, function (err, data) {
+                                if (err) {
+                                    return console.log('Error occurred: ' + err);
+                                }
+    
+                                console.log("Artist: " + data.tracks.items[0].artists[0].name);
+                                console.log("Song: " + data.tracks.items[0].name);
+    
+                                if (data.tracks.items[0].preview_url !== null) {
+                                    console.log("Preview: (Preview not available)")
+                                }
+                                else {
+                                    console.log("Preview: " + data.tracks.items[0].preview_url);
+                                }
+                                console.log("Album: " + data.tracks.items[0].album.name);
+                            });
+                        }
                     })
 
                 break;
@@ -94,28 +111,48 @@ inquirer
                         {
                             type: "input",
                             message: "Please type your Movie for the search: ",
-                            name: "movie"
+                            name: "movie",
                         }
                     ])
                     .then(function (response) {
                         var movieInput = response.movie;
 
-                        request("http://www.omdbapi.com/?apikey=trilogy&t=" + movieInput, function (error, response, event) {
+                        if (movieInput !== null) {
+                            request("http://www.omdbapi.com/?apikey=trilogy&t=mr%20nobody", function (error, response, event) {
 
-                            var movieInfo = JSON.parse(event);
+                                var movieInfo = JSON.parse(event);
 
-                            if (!error && response.statusCode === 200) {
-                                console.log("Title: " + movieInfo.Title)
-                                console.log("Year: " + movieInfo.Year);
-                                console.log("IMBD Rating: " + movieInfo.imdbRating);
-                                console.log("Rotten Tomatoes Rating: " + movieInfo.Ratings[1].Value);
-                                console.log("Country: " + movieInfo.Country);
-                                console.log("Language: " + movieInfo.Language);
-                                console.log("Plot: " + movieInfo.Plot);
-                                console.log("Actors: " + movieInfo.Actors);
-                            };
+                                if (!error && response.statusCode === 200) {
+                                    console.log("Title: " + movieInfo.Title);
+                                    console.log("Year: " + movieInfo.Year);
+                                    console.log("IMBD Rating: " + movieInfo.imdbRating);
+                                    console.log("Rotten Tomatoes Rating: " + movieInfo.Ratings[1].Value);
+                                    console.log("Country: " + movieInfo.Country);
+                                    console.log("Language: " + movieInfo.Language);
+                                    console.log("Plot: " + movieInfo.Plot);
+                                    console.log("Actors: " + movieInfo.Actors);
+                                };
 
-                        });
+                            });
+                        }
+
+                        else {
+                            request("http://www.omdbapi.com/?apikey=trilogy&t=" + movieInput, function (error, response, event) {
+
+                                var defaultInfo = JSON.parse(event);
+
+                                if (!error && response.statusCode === 200) {
+                                    console.log("Title: " + defaultInfo.Title)
+                                    console.log("Year: " + defaultInfo.Year);
+                                    console.log("IMBD Rating: " + defaultInfo.imdbRating);
+                                    console.log("Rotten Tomatoes Rating: " + defaultInfo.Ratings[1].Value);
+                                    console.log("Country: " + defaultInfo.Country);
+                                    console.log("Language: " + defaultInfo.Language);
+                                    console.log("Plot: " + defaultInfo.Plot);
+                                    console.log("Actors: " + defaultInfo.Actors);
+                                }
+                            })
+                        }
                     })
 
                 break;
