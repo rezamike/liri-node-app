@@ -72,8 +72,16 @@ inquirer
 
                             console.log("Artist: " + data.tracks.items[0].artists[0].name);
                             console.log("Song: " + data.tracks.items[0].name);
-                            console.log("Preview: " + data.tracks.items[0].preview_url);
+
+                            if (data.tracks.items[0].preview_url === null) {
+                                console.log("Preview: (Preview not available)")
+                            }
+                            else {
+                                console.log("Preview: " + data.tracks.items[0].preview_url);
+                            }
                             console.log("Album: " + data.tracks.items[0].album.name);
+
+
 
                         });
                     })
@@ -190,13 +198,13 @@ inquirer
 
                 request("http://artii.herokuapp.com/make?text=Michael Sanaiha&font=trek", function (error, response, body) {
 
-                if (!error && response.statusCode === 200) {
+                    if (!error && response.statusCode === 200) {
 
-                    console.log(body);
-                }
-            });
+                        console.log(body);
+                    }
+                });
 
-            break;
+                break;
         }
     });
 
