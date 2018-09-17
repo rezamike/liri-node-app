@@ -173,15 +173,17 @@ inquirer
             case "General":
 
                 fs.readFile("random.txt", "utf8", function (error, data) {
-
                     if (error) {
-                        return console.log(error);
+                        console.log(error);
                     }
-
-                    console.log(data);
-                    var dataArr = data.split(",");
-                    console.log(dataArr);
-
+                    else {
+                        let term = data.replace(/\n/g, "").split(", ");
+                        let choice;
+                        for (let i = 0; i < term.length; i++) {
+                            choice += JSON.parse(term[i]);
+                        }
+                        console.log(choice);
+                    }
                 });
 
                 break;
