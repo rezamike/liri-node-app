@@ -5,11 +5,11 @@ var Spotify = require("node-spotify-api");
 var keys = require("./keys.js");
 var moment = require("moment");
 var inquirer = require("inquirer");
+var round = 0;
 
 var spotify = new Spotify(keys.spotify);
 
 // var input = process.argv.splice(3).join(" ");
-
 
 
 inquirer
@@ -17,7 +17,7 @@ inquirer
         {
             type: "list",
             message: "What would you like to look up?",
-            choices: ["Concert Information", "Song Information", "Movie Information", "General", "Creator"],
+            choices: ["Concert Information", "Song Information", "Movie Information", "Random", "Creator"],
             name: "main"
         }
     ])
@@ -90,7 +90,7 @@ inquirer
                                 console.log("Artist: " + data.tracks.items[0].artists[0].name);
                                 console.log("Song: " + data.tracks.items[0].name);
 
-                                if (data.tracks.items[0].preview_url !== null) {
+                                if (data.tracks.items[0].preview_url === null) {
                                     console.log("Preview: (Preview not available)")
                                 }
                                 else {
@@ -108,7 +108,7 @@ inquirer
                                 console.log("Artist: " + data.tracks.items[0].artists[0].name);
                                 console.log("Song: " + data.tracks.items[0].name);
 
-                                if (data.tracks.items[0].preview_url !== null) {
+                                if (data.tracks.items[0].preview_url === null) {
                                     console.log("Preview: (Preview not available)")
                                 }
                                 else {
@@ -172,7 +172,7 @@ inquirer
                     })
 
                 break;
-            case "General":
+            case "Random":
 
                 fs.readFile("random.txt", "utf8", function (error, data) {
                     if (error) {
@@ -270,4 +270,3 @@ inquirer
                 break;
         }
     });
-
