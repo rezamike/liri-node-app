@@ -11,7 +11,6 @@ var spotify = new Spotify(keys.spotify);
 
 // var input = process.argv.splice(3).join(" ");
 
-function liri() {
 inquirer
     .prompt([
         {
@@ -269,10 +268,4 @@ inquirer
 
                 break;
         }
-        round++;
-
-        if (round < 5) {
-            liri();
-        }
     });
-}
