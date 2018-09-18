@@ -10,6 +10,8 @@ var spotify = new Spotify(keys.spotify);
 
 // var input = process.argv.splice(3).join(" ");
 
+
+
 inquirer
     .prompt([
         {
@@ -36,7 +38,7 @@ inquirer
                     .then(function (response) {
                         var concertInput = response.concert;
 
-                        if (concertInput !== null) {
+                        if (concertInput === "") {
                             request("https://rest.bandsintown.com/artists/the%20eagles/events?app_id=codingbootcamp", function (error, response, event) {
 
                                 var condefInfo = JSON.parse(event);
@@ -79,7 +81,7 @@ inquirer
                     .then(function (response) {
                         var songInput = response.song;
 
-                        if (songInput !== null) {
+                        if (songInput === "") {
                             spotify.search({ type: "track", query: "the sign ace of base", limit: 1 }, function (err, data) {
                                 if (err) {
                                     return console.log('Error occurred: ' + err);
@@ -131,7 +133,7 @@ inquirer
                     .then(function (response) {
                         var movieInput = response.movie;
 
-                        if (movieInput !== null) {
+                        if (movieInput === "") {
                             request("http://www.omdbapi.com/?apikey=trilogy&t=mr%20nobody", function (error, response, event) {
 
                                 var defaultInfo = JSON.parse(event);
@@ -177,12 +179,20 @@ inquirer
                         console.log(error);
                     }
                     else {
-                        let term = data.replace(/\n/g, "").split(", ");
-                        let choice;
-                        for (let i = 0; i < term.length; i++) {
-                            choice += JSON.parse(term[i]);
+                        var breakA = data.split(",");
+                        for (let i = 1; i < breakA.length; i++) {
+                            var searchTerm = breakA[i];
+
+                            spotify.search({ type: "track", query: searchTerm, limit: 1 }, function (err, data) {
+                                if (err) {
+                                    return console.log('Error occurred: ' + err);
+                                }
+
+                                console.log("Artist: " + data.tracks.items[0].artists[0].name);
+                                console.log("Song: " + data.tracks.items[0].name);
+                                console.log("Album: " + data.tracks.items[0].album.name);
+                            });
                         }
-                        console.log(choice);
                     }
                 });
 
